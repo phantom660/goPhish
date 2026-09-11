@@ -1,10 +1,48 @@
 import { useState, type FormEvent, type KeyboardEvent } from 'react';
 
+type LoginTelemetry = {
+  timestamp: string;
+  event: 'submit-button-click';
+  username?: string;
+  passwordLength: number;
+};
+
 function App() {
   const [capsLockOn, setCapsLockOn] = useState(false);
+  const [telemetryConsent, setTelemetryConsent] = useState(false);
+  const [submitMessage, setSubmitMessage] = useState('');
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const formData = new FormData(e.currentTarget);
+    const password = String(formData.get('password') ?? '');
+    const telemetry: LoginTelemetry = {
+      timestamp: new Date().toISOString(),
+      event: 'submit-button-click',
+      passwordLength: password.length,
+    };
+
+    if (telemetryConsent) {
+      telemetry.username = String(formData.get('username') ?? '');
+    }
+
+    const storedEvents = localStorage.getItem('gophish-login-telemetry');
+    let events: LoginTelemetry[] = [];
+
+    if (storedEvents) {
+      try {
+        const parsedEvents: unknown = JSON.parse(storedEvents);
+        if (Array.isArray(parsedEvents)) {
+          events = parsedEvents as LoginTelemetry[];
+        }
+      } catch {
+        events = [];
+      }
+    }
+
+    localStorage.setItem('gophish-login-telemetry', JSON.stringify([...events, telemetry]));
+    setSubmitMessage('Demo event recorded. The password itself was not stored.');
   };
 
   const handleKeyUp = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -84,7 +122,16 @@ function App() {
                       </div>
                     </section>
 
-                    <section className="check"></section>
+                    <section className="check">
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={telemetryConsent}
+                          onChange={(e) => setTelemetryConsent(e.target.checked)}
+                        />{' '}
+                        I consent to recording my username for this local security-awareness demo.
+                      </label>
+                    </section>
 
                     <section className="btn-row buttons">
                       <input
@@ -95,6 +142,7 @@ function App() {
                         tabIndex={6}
                         type="submit"
                       />
+                      {submitMessage && <p role="status">{submitMessage}</p>}
                       <br />
                       <br />
                       <a
