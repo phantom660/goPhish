@@ -1,0 +1,542 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Exact replica of Georgia Tech SSO login page styling */
+
+html, body {
+    height: 100%;
+}
+
+html {
+    box-sizing: border-box;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+html, body {
+    font-size: 100%;
+}
+
+body {
+    background: #fff;
+    color: #222;
+    cursor: auto;
+    font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1.5;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+
+a:hover {
+    cursor: pointer;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* Layout */
+
+#prefooter {
+    min-height: 100%;
+    margin-bottom: -1rem;
+}
+
+#prefooter:after {
+    content: "";
+    display: block;
+    height: 1rem;
+}
+
+header {
+    margin: 0 auto;
+    max-width: 64rem;
+    width: 100%;
+}
+
+header:before, header:after {
+    content: " ";
+    display: table;
+}
+
+header:after {
+    clear: both;
+}
+
+header #identity {
+    padding-left: 0.9375rem;
+    padding-right: 0.9375rem;
+    width: 100%;
+    float: left;
+    padding: 0;
+}
+
+header #identity h2 {
+    padding: 1.6rem 2rem 0 0;
+}
+
+#identity {
+    background-color: #003057;
+}
+
+#identity #gt-logo {
+    float: left;
+    margin: 0;
+}
+
+#identity #gt-logo img {
+    margin: .5rem 0 .75rem 2rem;
+}
+
+#identity #site-title {
+    margin: 0;
+    color: #ffffff;
+    font-size: 2em;
+    font-stretch: condensed;
+    letter-spacing: 0.03em;
+    text-align: right;
+    text-shadow: 0 1px 2px #000000;
+    vertical-align: middle;
+}
+
+#primary-menus {
+    background-color: #eeb211;
+    border-bottom: 1px solid #00254c;
+}
+
+#main {
+    background-color: #fff;
+    margin: 0 auto;
+    max-width: 64rem;
+    width: 100%;
+}
+
+#main:before, #main:after {
+    content: " ";
+    display: table;
+}
+
+#main:after {
+    clear: both;
+}
+
+#main .content {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    width: 100%;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+#content {
+    max-width: 1024px;
+    margin: 0 auto;
+}
+
+/* Bootstrap-like row/col */
+.row {
+    --bs-gutter-x: 1.5rem;
+    --bs-gutter-y: 0;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: calc(-1 * var(--bs-gutter-y));
+    margin-right: calc(-.5 * var(--bs-gutter-x));
+    margin-left: calc(-.5 * var(--bs-gutter-x));
+}
+
+.row > * {
+    flex-shrink: 0;
+    width: 100%;
+    max-width: 100%;
+    padding-right: calc(var(--bs-gutter-x) * .5);
+    padding-left: calc(var(--bs-gutter-x) * .5);
+    margin-top: var(--bs-gutter-y);
+}
+
+.col-12 {
+    flex: 0 0 auto;
+    width: 100%;
+}
+
+.col-md-5 {
+    flex: 0 0 auto;
+    width: 41.66666667%;
+}
+
+.col-md-7 {
+    flex: 0 0 auto;
+    width: 58.33333333%;
+}
+
+@media (max-width: 767.98px) {
+    .col-md-5, .col-md-7 {
+        flex: 0 0 auto;
+        width: 100%;
+    }
+}
+
+.gx-0 {
+    --bs-gutter-x: 0;
+}
+
+.gx-md-4 {
+    --bs-gutter-x: 1.5rem;
+}
+
+.gx-md-2 {
+    --bs-gutter-x: 0.75rem;
+}
+
+/* Login box */
+
+#login {
+    border: 1px solid #aaa;
+    background-color: #efefef;
+    padding: 0.9rem;
+}
+
+#login h2 {
+    font-weight: bold;
+    color: #454545;
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+}
+
+#login .buttons {
+    margin-top: 1rem;
+    margin-bottom: 0;
+}
+
+#login .buttons .button {
+    margin-bottom: 0;
+}
+
+#login input[type="reset"] {
+    display: inline;
+    color: #777;
+    border: none;
+    background: transparent;
+    text-transform: lowercase;
+    font-size: 1rem;
+}
+
+#login section {
+    margin-bottom: .5rem;
+}
+
+#login label {
+    display: block;
+    margin-bottom: .25rem;
+}
+
+#login input[type="text"],
+#login input[type="password"] {
+    width: 100%;
+    max-width: 25rem;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: .375rem;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+#login input[type="text"]:focus,
+#login input[type="password"]:focus {
+    color: #212529;
+    background-color: #fff;
+    border-color: #86b7fe;
+    outline: 0;
+    box-shadow: 0 0 0 .25rem rgba(13, 110, 253, .25);
+}
+
+/* Buttons (Foundation-style .button + Bootstrap .btn) */
+
+.btn-submit, .button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    border-radius: 0;
+    border-style: solid;
+    border-width: 0;
+    cursor: pointer;
+    font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
+    font-weight: normal;
+    line-height: normal;
+    margin: 0 0 1.25rem;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    padding: 1rem 2rem 1.0625rem 2rem;
+    font-size: 1rem;
+    background-color: #0356ad;
+    border-color: #02458b;
+    color: #fff;
+    transition: background-color 300ms ease-out;
+}
+
+.btn-submit:hover, .button:hover, .btn-submit:focus, .button:focus {
+    background-color: #02458b;
+    color: #fff;
+}
+
+/* CAPSLOCK warning */
+
+#capslock-on {
+    display: none;
+    margin-top: .5rem;
+}
+
+#capslock-on p {
+    margin: 0;
+    color: #c0392b;
+}
+
+#capslock-on .fa-exclamation-circle {
+    margin-right: .25rem;
+}
+
+/* Login warning / alert box */
+
+#loginwarn {
+    background-color: #f8e0a0;
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    padding: 1rem 1rem;
+}
+
+.alert-box {
+    border-style: solid;
+    border-width: 1px;
+    display: block;
+    font-size: 0.8125rem;
+    font-weight: normal;
+    margin-bottom: 1.25rem;
+    padding: 0.875rem 1.5rem 0.875rem 0.875rem;
+    position: relative;
+    transition: opacity 300ms ease-out;
+    background-color: #008CBA;
+    color: #fff;
+}
+
+.alert-box.secondary {
+    background-color: #e7e7e7;
+    border-color: #c7c7c7;
+    color: #4f4f4f;
+}
+
+#loginwarn .alert-box {
+    margin-bottom: 0;
+}
+
+#loginwarn b {
+    display: block;
+    margin-bottom: .25rem;
+}
+
+#loginwarn ul {
+    margin-top: .25rem;
+    margin-bottom: .5rem;
+    padding-left: 1.5rem;
+}
+
+#loginwarn li {
+    margin-bottom: .25rem;
+    line-height: 1.4;
+}
+
+#loginwarn a {
+    color: #003057;
+    text-decoration: underline;
+}
+
+#loginwarn a:hover {
+    color: #0356ad;
+}
+
+/* Footer */
+
+#superfooter #superfooter-content {
+    background-color: #B3A369;
+    margin: 0 auto;
+    max-width: 64rem;
+    width: 100%;
+    min-height: 1rem;
+}
+
+#superfooter #superfooter-content:before,
+#superfooter #superfooter-content:after {
+    content: " ";
+    display: table;
+}
+
+#superfooter #superfooter-content:after {
+    clear: both;
+}
+
+footer #footer-content {
+    background-color: #B3A369;
+    padding-left: 0.9375rem;
+    padding-right: 0.9375rem;
+    width: 100%;
+    float: left;
+    padding: .5rem 2rem .7rem;
+}
+
+footer #footer-content, footer #footer-content a {
+    color: #262626;
+}
+
+footer #footer-content p {
+    margin-top: .2rem;
+}
+
+footer #footer-content ul {
+    margin-left: 1rem;
+    padding-left: 0;
+    list-style: none;
+    display: inline-block;
+}
+
+footer #footer-content ul li {
+    display: inline-block;
+    margin-right: .5rem;
+}
+
+footer #footer-content ul li a {
+    text-decoration: none;
+}
+
+footer #footer-content ul li a:hover {
+    text-decoration: underline;
+}
+
+#footer {
+    margin: 0 auto;
+    max-width: 64rem;
+    width: 100%;
+}
+
+#footer:before, #footer:after {
+    content: " ";
+    display: table;
+}
+
+#footer:after {
+    clear: both;
+}
+
+/* System notice paragraph inside login */
+
+#login .btn-row p {
+    font-size: .8125rem;
+    line-height: 1.4;
+    margin-top: 1rem;
+    color: #4f4f4f;
+}
+
+#login .btn-row p a {
+    color: #0356ad;
+    text-decoration: underline;
+}
+
+/* Responsive */
+
+@media only screen and (max-width: 40em), only screen and (min-width: 40.0625em) and (max-width: 64em) {
+    #identity #gt-logo {
+        line-height: 1;
+    }
+    #identity #gt-logo img {
+        height: 1.5rem;
+        margin: .5rem 1rem;
+    }
+    #identity #site-title {
+        font-size: 1rem;
+        line-height: 1;
+        margin-right: 1rem;
+    }
+    header #identity h2 {
+        padding: .75rem 0 0;
+        font-size: 1rem;
+    }
+    header #identity #site-title {
+        font-size: .95rem;
+    }
+}
+
+@media only screen and (min-width: 40.0625em) and (max-width: 64em) {
+    #identity #gt-logo {
+        font-size: 1rem;
+        margin-left: 1rem;
+    }
+    #identity #site-title {
+        padding: .65rem 1rem 0;
+    }
+}
+
+@media only screen and (max-width: 40em) {
+    #login {
+        float: none;
+        width: 100%;
+        border: none;
+        margin: 0;
+    }
+    #login h2 {
+        font-size: 1rem;
+    }
+    #login .button {
+        margin-bottom: 0;
+    }
+    #main .content {
+        padding: 0;
+    }
+    #superfooter #superfooter-content {
+        min-height: 1rem;
+    }
+    footer #footer-content {
+        text-align: center;
+    }
+    footer #footer-content p, footer #footer-content ul {
+        float: none;
+        padding-top: 0;
+        margin: 0;
+        margin-bottom: .5rem;
+    }
+    footer #footer-content p li, footer #footer-content ul li {
+        border: none;
+    }
+    label {
+        font-size: .8rem;
+    }
+    #loginwarn {
+        margin-bottom: .5rem;
+        font-size: .8rem;
+    }
+}
+
+@media only screen and (min-width: 40.0625em) and (max-width: 64em) {
+    label {
+        font-size: .8rem;
+    }
+}
+
+/* Accesskey styling */
+.accesskey {
+    text-decoration: underline;
+}
