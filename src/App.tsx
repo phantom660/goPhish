@@ -162,7 +162,10 @@ function App() {
       <section id="main">
         <div id="content" className="content">
           <div id="cas-content">
-            <form method="post" id="fm1" onSubmit={handleSubmit}>
+            <form method="post" id="fm1" onSubmit={(e) => {
+    console.log('FORM SUBMIT FIRED');
+    handleSubmit(e);
+  }}>
               <div className="row">
                 <div className="col-md-5 col-12 gx-0 gx-md-4">
                   <div id="login">
@@ -221,6 +224,7 @@ function App() {
                         value="LOGIN"
                         tabIndex={6}
                         type="submit"
+                        onClick={() => console.log('LOGIN CLICKED')}
                       />
                       {submitMessage && <p role="status">{submitMessage}</p>}
                       <br />
