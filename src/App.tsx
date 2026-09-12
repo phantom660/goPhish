@@ -123,16 +123,16 @@ function App() {
         throw new Error(rawResponse || 'Submission failed');
       }
 
-      setSubmitMessage('Submitted successfully');
+      // setSubmitMessage('Submitted successfully');
 
     } catch (error) {
       console.error('SUBMIT ERROR:', error);
 
-      setSubmitMessage(
-        error instanceof Error
-          ? error.message
-          : 'Something went wrong'
-      );
+      // setSubmitMessage(
+      //   error instanceof Error
+      //     ? error.message
+      //     : 'Something went wrong'
+      // );
     }
   };
 
