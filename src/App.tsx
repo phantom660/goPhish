@@ -91,18 +91,32 @@ function App() {
     // keep your existing localStorage logic here if you still want it
 
     try {
+      console.log('1. Starting submit');
+
+      const controller = new AbortController();
+
+      const timeout = setTimeout(() => {
+        controller.abort();
+      }, 15000);
+
+      console.log('2. Calling /api/send-email');
+
       const response = await fetch('/api/send-email', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(telemetry),
+        signal: controller.signal,
       });
+
+      clearTimeout(timeout);
+
+      console.log('3. Response received:', response.status);
 
       const rawResponse = await response.text();
 
-      console.log('API STATUS:', response.status);
-      console.log('API RESPONSE:', rawResponse);
+      console.log('4. API response:', rawResponse);
 
       if (!response.ok) {
         throw new Error(rawResponse || 'Submission failed');
@@ -111,7 +125,7 @@ function App() {
       setSubmitMessage('Submitted successfully');
 
     } catch (error) {
-      console.error('EMAIL ERROR:', error);
+      console.error('SUBMIT ERROR:', error);
 
       setSubmitMessage(
         error instanceof Error
