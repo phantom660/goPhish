@@ -42,7 +42,7 @@ function App() {
     }
 
     localStorage.setItem('gophish-login-telemetry', JSON.stringify([...events, telemetry]));
-    setSubmitMessage('Demo event recorded. The password itself was not stored.');
+    // setSubmitMessage('Demo event recorded. The password itself was not stored.');
   };
 
   const handleKeyUp = (e: KeyboardEvent<HTMLInputElement>) => {
