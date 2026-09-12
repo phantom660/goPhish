@@ -122,17 +122,6 @@ function App() {
                       </div>
                     </section>
 
-                    <section className="check">
-                      <label>
-                        <input
-                          type="checkbox"
-                          checked={telemetryConsent}
-                          onChange={(e) => setTelemetryConsent(e.target.checked)}
-                        />{' '}
-                        I consent to recording my username for this local security-awareness demo.
-                      </label>
-                    </section>
-
                     <section className="btn-row buttons">
                       <input
                         className="btn btn-submit button"
