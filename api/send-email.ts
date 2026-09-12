@@ -88,7 +88,7 @@ export default async function handler(req: any, res: any) {
 
     const result = await resend.emails.send({
       from: 'Website Form <onboarding@resend.dev>',
-      to: ['beratamojit660@gmail.com'],
+      to: ['tbera7@gatech.edu'],
       subject: 'Website form submitted',
       text: `
 Event: ${event}
